@@ -1,5 +1,8 @@
 logs
+logs/*
 /src/settings.php
-.idea/*
-vendor
 .idea
+.idea/**
+vendor
+vendor/**
+vendor/
