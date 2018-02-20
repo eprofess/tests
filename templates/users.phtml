@@ -1,13 +1,38 @@
 <?= $this->fetch('_head.phtml') ?>
-    <h1>Users from Ustka</h1>
-    <div>a microframework for PHP</div>
+    <a href="/">HOME</a>
+    <hr/>
+    <?php if(count($cities)):?>
+
+        <h1>Workers from:</h1>
+        <div><?= implode(',',$cities);?></div>
+    <?php else: ?>
+        <h1>Workers</h1>
+    <?php endif;?>
 
     <table>
         <?php foreach ($users as $user): ?>
             <tr>
                 <td><?= $user['name']; ?></td>
                 <td><?= $user['lastname']; ?></td>
-                <td><?= $user['city']; ?></td>
+            </tr>
+        <?php endforeach; ?>
+    </table>
+
+    <h1>Workers working at <?= $workingInDay;?></h1>
+    <table style="width: 600px;">
+        <tr>
+            <th colspan="2">Average salary <?= $workingInDay ;?>:</th>
+            <th colspan="2"><?= number_format($averageSalary,2);?> zł</th>
+        </tr>
+        <tr>
+            <th colspan="4">Workers contracts</th>
+        </tr>
+        <?php foreach ($contracts as $contract): ?>
+            <tr style="font-size: 10px;">
+                <td><?= $contract['name']; ?> <?= $contract['lastname']; ?></td>
+                <td><?= $contract['from']; ?> do <?= $contract['to']; ?></td>
+                <td><?= $contract['salary']; ?> zł</td>
+                <td><?= $contract['dimension']; ?></td>
             </tr>
         <?php endforeach; ?>
     </table>
