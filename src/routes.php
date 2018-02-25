@@ -113,6 +113,4 @@ $app->get('/fixtures', function (Request $request, Response $response, array $ar
         $stmtContract->bindValue(':userId',$userId,PDO::PARAM_INT);
         $stmtContract->execute();
     }
-
-
 });
