@@ -23,7 +23,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\": "tests/"
+            "Tests\\": "src/"
         }
     },
     "config": {
@@ -33,5 +33,4 @@
         "start": "php -S localhost:8080 -t public index.php",
         "test": "phpunit"
     }
-
 }
