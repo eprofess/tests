@@ -53,7 +53,10 @@ $app->get('/users', function (Request $request, Response $response, array $args)
 });
 
 $app->get('/fixtures', function (Request $request, Response $response, array $args) {
-    $stmt = $this->db->prepare('
+    /** @var PDO $db */
+    $db = $this->db;
+    /** @var PDOStatement $stmt */
+    $db->exec('
         DROP TABLE IF EXISTS `contracts`;
         CREATE TABLE  `contracts` (
           `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -67,11 +70,11 @@ $app->get('/fixtures', function (Request $request, Response $response, array $ar
           CONSTRAINT `FK_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
         ) ENGINE=InnoDB AUTO_INCREMENT=102 DEFAULT CHARSET=utf8;'
     );
-    $stmt->execute();
+    $this->logger->info('Contract table created');
 
-    $smt = $this->db->prepare('
+    $db->exec('
         DROP TABLE IF EXISTS `users`;
-        CREATE TABLE  `tests`.`users` (
+        CREATE TABLE  `users` (
           `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
           `name` varchar(45) NOT NULL DEFAULT \'\',
           `lastname` varchar(45) NOT NULL DEFAULT \'\',
@@ -79,12 +82,12 @@ $app->get('/fixtures', function (Request $request, Response $response, array $ar
           PRIMARY KEY (`id`)
         ) ENGINE=InnoDB AUTO_INCREMENT=315 DEFAULT CHARSET=utf8;
     ');
-    $stmt->execute();
+    $this->logger->info('users table created');
 
-    $stmt = $this->db->prepare('truncate `users`');
-    $stmt->execute();
-    $stmt = $this->db->prepare('truncate `contracts`');
-    $stmt->execute();
+    $db->exec('truncate `users`');
+    $this->logger->info('Data in table `users` truncated');
+    $db->exec('truncate `contracts`');
+    $this->logger->info('Data in table `contracts` truncated');
 
     $faker = Factory::create('pl_PL');
     /** @var PDOStatement $stmt */
@@ -113,4 +116,6 @@ $app->get('/fixtures', function (Request $request, Response $response, array $ar
         $stmtContract->bindValue(':userId',$userId,PDO::PARAM_INT);
         $stmtContract->execute();
     }
+
+    $this->logger->info('Example data loaded');
 });
